@@ -1,17 +1,6 @@
-import { Component } from '@angular/core';
-
-export class ClassRoom {
-  id: number;
-  name: string;
-}
-
-const CLASSROOMS: ClassRoom[] = [
-  { id: 203, name: 'Advanced Calculus' },
-  { id: 204, name: 'Numerical Methods' },
-  { id: 220, name: 'Sensors and Instrumentation' },
-  { id: 241, name: 'Introduction to Computer Structures and Real-Time Systems' },
-  { id: 252, name: 'Linear Systems and Signals' },
-];
+import { Component, OnInit } from '@angular/core';
+import { Classroom } from './classroom';
+import { ClassroomService } from './classroom.service';
 
 @Component({
   selector: 'app-root',
@@ -74,28 +63,28 @@ const CLASSROOMS: ClassRoom[] = [
       <span class="badge">{{classroom.id}}</span> {{classroom.name}}
     </li>
   </ul>
-  <div *ngIf="selectedClassroom">
-    <h2>{{selectedClassroom.name}} Course Details</h2>
-    <div>
-      <label>id: </label>{{selectedClassroom.id}}
-    </div>
-    <div>
-      <label>name: </label>
-      <input [(ngModel)]="selectedClassroom.name" placeholder="name">
-    </div>
-  </div>
-  `
+  <classroom-detail [classroom]="selectedClassroom"></classroom-detail>
+  `,
+  providers: [ClassroomService]
 })
 
-
-
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'lynkt';
-  classrooms = CLASSROOMS;
-  selectedClassroom: ClassRoom;
+  classrooms: Classroom[];
+  selectedClassroom: Classroom;
 
-  onSelect(classroom: ClassRoom): void {
+  constructor(private classroomService: ClassroomService) { }
+
+  onSelect(classroom: Classroom): void {
     this.selectedClassroom = classroom;
+  }
+
+  ngOnInit(): void {
+    this.getClassrooms();
+}
+
+  getClassrooms(): void {
+    this.classroomService.getClassrooms().then(classrooms => this.classrooms = classrooms);
   }
 }
 
