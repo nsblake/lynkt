@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Classroom } from './classroom';
 import { ClassroomService } from './classroom.service';
+import {MdTableModule} from '@angular/material';
 
 @Component({
   selector: 'app-root',
@@ -64,6 +65,7 @@ import { ClassroomService } from './classroom.service';
     </li>
   </ul>
   <classroom-detail [classroom]="selectedClassroom"></classroom-detail>
+  <classroom-table></classroom-table>
   `,
   providers: [ClassroomService]
 })
